@@ -15,13 +15,27 @@
 </head>
 <body>
     <header class="header">
-        <h1><a href="{{ url_for ('index') }}" class="header__link">Habits</a></h1>
+        <h1 class="header__logo"><a href="{{ url_for ('index') }}" class="header__link">Habits</a></h1>
         {% if "add" not in request.endpoint %}
-            <a href="{{ url_for ('add_habit') }}" class="header__link">+ Add New</a>
+            <a href="{{ url_for('add_habit') }}" class="header__link">+ Add New</a>
         {% endif %}
     </header>
 
-    <main>
+    <main class="main">
+        <section class="dates">
+            {% for date in date_range(selected_date) %}
+                <a 
+                    class="dates__link {{ 'dates__link--current' if loop.index0 == 3 else ''}}"
+                    href="{{ url_for('index', date=date) }}"
+                    >
+                    <time class="date" datetime="{{ date }}">
+                        <span>{{ date.strftime("%a") }}</span>
+                        <span>{{ date.strftime("%d") }}</span>
+                    </time>
+                </a>
+            {% endfor %}
+        </section>
+
         {% block main_content %}
         {% endblock %}
 
